@@ -57,7 +57,7 @@ app.get('/', (_req, res) => {
 });
 
 // Start the server
-const port: number = parseInt(process.env.PORT || '3000', 10);
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+const port: number = parseInt(process.env.PORT!); // Use Railway's assigned port
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
 });
