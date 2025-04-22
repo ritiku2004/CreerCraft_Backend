@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'; // Environment variable management
 import express from 'express';
 import connectDB from './src/database'; // Your database connection function
 import authRoutes from './routes/auth'; // Auth routes
@@ -5,7 +6,6 @@ import resumeRoute from './routes/resume'; // Resume routes
 import session from 'express-session'; // Session management
 import cookieParser from 'cookie-parser'; // Cookie handling
 import cors from 'cors'; // CORS handling
-import dotenv from 'dotenv'; // Environment variable management
 import portfolioRoute from "./routes/portfolio";
 
 dotenv.config(); // Load environment variables
