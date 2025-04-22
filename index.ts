@@ -4,6 +4,7 @@ import connectDB from './src/database'; // Your database connection function
 import authRoutes from './routes/auth'; // Auth routes
 import resumeRoute from './routes/resume'; // Resume routes
 import session from 'express-session'; // Session management
+import MongoStore from 'connect-mongo'; // ← added for Mongo-backed sessions
 import cookieParser from 'cookie-parser'; // Cookie handling
 import cors from 'cors'; // CORS handling
 import portfolioRoute from "./routes/portfolio";
@@ -26,16 +27,21 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
 
-// Session setup
+// Session setup (using MongoStore instead of MemoryStore)
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "mysecretkey",
     resave: false,
     saveUninitialized: false, // Don't create sessions unless something is saved
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI!,      // re‑use your DB URI
+      collectionName: "sessions",            // optional: name of the collection
+      ttl: 24 * 60 * 60,                     // session lifetime in seconds
+    }),
     cookie: {
-      secure: false, // Set to true if you're using https
-      httpOnly: true, // Protect the session from JS access
-      maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+      secure: process.env.NODE_ENV === "production", // true if HTTPS
+      httpOnly: true,                                // protect from JS access
+      maxAge: 24 * 60 * 60 * 1000,                   // 1 day in ms
     },
   })
 );
@@ -51,7 +57,7 @@ app.get('/', (_req, res) => {
 });
 
 // Start the server
-const port: number = 3000;
+const port: number = parseInt(process.env.PORT || '3000', 10);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
