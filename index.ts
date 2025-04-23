@@ -19,6 +19,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Default route
+app.get('/', (_req, res) => {
+  res.send("TypeScript with Express");
+});
+
 // CORS setup
 app.use(cors({
   origin: process.env.FRONTEND, // Frontend URL (adjust if needed)
@@ -51,10 +56,6 @@ app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/resume", resumeRoute); // Resume-related routes
 app.use("/api/portfolio", portfolioRoute);
 
-// Default route
-app.get('/', (_req, res) => {
-  res.send("TypeScript with Express");
-});
 
 // Start the server
 const port: number = parseInt(process.env.PORT!); // Use Railway's assigned port
