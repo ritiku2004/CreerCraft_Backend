@@ -59,6 +59,6 @@ app.use("/api/portfolio", portfolioRoute);
 
 // Start the server
 const port: number = parseInt(process.env.PORT!); // Use Railway's assigned port
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running at http://0.0.0.0:${port}`);
+app.listen(5000, () => {
+  console.log(`Server running at 5000`);
 });
